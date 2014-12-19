@@ -1,0 +1,38 @@
+configurations.all {
+    resolutionStrategy {
+        // Cobertura includes an ASM version that can't handle Java 8, ASM 5.0.3 handles Java8
+        force 'org.ow2.asm:asm:5.0.3'
+        forcedModules = [ 'org.ow2.asm:asm:5.0.3' ]
+    }
+}
+
+buildscript {
+    repositories {
+        maven {url "http://artifactory/artifactory/libs-release" }
+        maven { url "http://artifactory/artifactory/remote-repos" }
+    }
+    dependencies {
+        classpath 'net.saliman:gradle-cobertura-plugin:2.2.5'
+    }
+}
+
+apply plugin: 'java'
+apply plugin: 'groovy'
+apply plugin: 'net.saliman.cobertura'
+
+sourceCompatibility = 1.8
+
+version = '1.0'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile group: 'org.codehaus.groovy', name: 'groovy-all', version: '2.3.+'
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+cobertura {
+    coverageFormats = ['html', 'xml']
+}
